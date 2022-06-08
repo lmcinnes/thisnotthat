@@ -2,7 +2,8 @@ import panel as pn
 import param
 import pandas as pd
 import numpy as np
-import numpy.typing as npt
+
+# import numpy.typing as npt
 from bokeh.palettes import Turbo256
 
 from .utils import _palette_index
@@ -18,7 +19,7 @@ class LegendPane(pn.reactive.Reactive):
 
     def __init__(
         self,
-        labels: npt.ArrayLike,
+        labels,  #: npt.ArrayLike,
         factors: List[str],
         palette: Optional[Sequence[str]] = None,
         *,
@@ -127,7 +128,7 @@ class NewLabelButton(pn.reactive.Reactive):
 
     def __init__(
         self,
-        labels: npt.ArrayLike,
+        labels,  #: npt.ArrayLike,
         *,
         button_type: str = "success",
         button_text: str = "New Label",
@@ -164,7 +165,7 @@ class LabelEditorPane(pn.reactive.Reactive):
         return self.legend.labels
 
     @labels.setter
-    def labels(self, new_labels: npt.ArrayLike) -> None:
+    def labels(self, new_labels) -> None:
         self.legend.labels = pd.Series(new_labels)
 
     @property
@@ -177,7 +178,7 @@ class LabelEditorPane(pn.reactive.Reactive):
 
     def __init__(
         self,
-        labels: npt.ArrayLike,
+        labels,  #: npt.ArrayLike,
         color_factors: List[str],
         color_palette: Optional[Sequence[str]] = None,
         *,

@@ -2,7 +2,8 @@ import panel as pn
 import param
 import numpy as np
 import pandas as pd
-import numpy.typing as npt
+
+# import numpy.typing as npt
 
 from typing import *
 

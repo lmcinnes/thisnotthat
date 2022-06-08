@@ -5,7 +5,8 @@ import bokeh.models
 import bokeh.transform
 import bokeh.palettes
 import numpy as np
-import numpy.typing as npt
+
+# import numpy.typing as npt
 import pandas as pd
 
 from .utils import _palette_index
@@ -87,7 +88,7 @@ class BokehPlotPane(pn.viewable.Viewer, pn.reactive.Reactive):
 
     def __init__(
         self,
-        data: npt.ArrayLike,
+        data,  #: npt.ArrayLike,
         labels: Iterable[str],
         hover_text: Optional[Iterable[str]] = None,
         marker_size: Optional[Iterable[float]] = None,

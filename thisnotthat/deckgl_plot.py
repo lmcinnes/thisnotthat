@@ -2,7 +2,8 @@ import panel as pn
 import param
 import bokeh.palettes
 import numpy as np
-import numpy.typing as npt
+
+# import numpy.typing as npt
 import pandas as pd
 
 from matplotlib.colors import to_rgb
@@ -36,7 +37,7 @@ class DeckglPlotPane(pn.viewable.Viewer, pn.reactive.Reactive):
 
     def __init__(
         self,
-        data: npt.ArrayLike,
+        data,  #: npt.ArrayLike,
         labels: Iterable[str],
         hover_text: Optional[Iterable[str]] = None,
         marker_size: Optional[Iterable[float]] = None,
@@ -329,11 +330,13 @@ class DeckglPlotPane(pn.viewable.Viewer, pn.reactive.Reactive):
                 self._color_map_in_selection_mode = True
 
             if self._color_by_enabled:
-                self.dataframe.iloc[selected, self._color_loc] = self.dataframe.iloc[selected, self._color_by_loc]
+                self.dataframe.iloc[selected, self._color_loc] = self.dataframe.iloc[
+                    selected, self._color_by_loc
+                ]
             else:
-                self.dataframe.iloc[selected, self._color_loc] = self.dataframe.label.iloc[
-                    selected
-                ].map(self.color_mapping)
+                self.dataframe.iloc[
+                    selected, self._color_loc
+                ] = self.dataframe.label.iloc[selected].map(self.color_mapping)
 
             self.points["data"] = self.dataframe
 

@@ -2,7 +2,8 @@ import panel as pn
 import param
 import pandas as pd
 import numpy as np
-import numpy.typing as npt
+
+# import numpy.typing as npt
 import bokeh.palettes
 import bisect
 
@@ -120,7 +121,9 @@ class PlotControlPane(pn.reactive.Reactive):
                 palette_sizes = sorted(list(palette_dict.keys()))
 
                 if n_colors_required <= max(palette_sizes):
-                    best_size_index = bisect.bisect_left(palette_sizes, n_colors_required)
+                    best_size_index = bisect.bisect_left(
+                        palette_sizes, n_colors_required
+                    )
                     palette = palette_dict[palette_sizes[best_size_index]]
                 else:
                     max_size = max(palette_sizes)
@@ -136,7 +139,9 @@ class PlotControlPane(pn.reactive.Reactive):
                 palette_sizes = sorted(list(palette_dict.keys()))
 
                 if n_colors_required <= max(palette_sizes):
-                    best_size_index = bisect.bisect_left(palette_sizes, n_colors_required)
+                    best_size_index = bisect.bisect_left(
+                        palette_sizes, n_colors_required
+                    )
                     palette = palette_dict[palette_sizes[best_size_index]]
                 else:
                     max_size = max(palette_sizes)
@@ -163,12 +168,12 @@ class PlotControlPane(pn.reactive.Reactive):
         if self.hover_text_column.value == "Default":
             self.hover_text = []
         else:
-            self.hover_text = self.dataframe[self.hover_text_column.value].map(str).to_list()
+            self.hover_text = (
+                self.dataframe[self.hover_text_column.value].map(str).to_list()
+            )
 
     def _marker_size_change(self, event) -> None:
         if self.marker_size_column.value == "Default":
             self.marker_size = []
         else:
-            self.marker_size = (
-                self.dataframe[self.marker_size_column.value].to_list()
-            )
+            self.marker_size = self.dataframe[self.marker_size_column.value].to_list()

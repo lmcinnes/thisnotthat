@@ -10,7 +10,8 @@ from sklearn.metrics import pairwise_distances
 from pynndescent import NNDescent
 
 import numpy as np
-import numpy.typing as npt
+
+# import numpy.typing as npt
 import networkx as nx
 
 from typing import *
@@ -361,9 +362,9 @@ def text_labels_from_source_metadata(
 class JointVectorLabelLayers(object):
     def __init__(
         self,
-        source_vectors: npt.ArrayLike,
-        map_representation: npt.ArrayLike,
-        labelling_vectors: npt.ArrayLike,
+        source_vectors,  #: npt.ArrayLike,
+        map_representation,  #: npt.ArrayLike,
+        labelling_vectors,  #: npt.ArrayLike,
         labels: Dict[int, Any],
         *,
         vector_metric="cosine",
@@ -432,12 +433,12 @@ class JointVectorLabelLayers(object):
             for label_layer in self.labels
         ]
 
-class MetadataLabelLayers(object):
 
+class MetadataLabelLayers(object):
     def __init__(
         self,
-        source_vectors: npt.ArrayLike,
-        map_representation: npt.ArrayLike,
+        source_vectors,  #: npt.ArrayLike,
+        map_representation,  #: npt.ArrayLike,
         metadata_dataframe: pd.Dataframe,
         *,
         vector_metric="cosine",
@@ -458,7 +459,11 @@ class MetadataLabelLayers(object):
         label_formatter=string_label_formatter,
         random_state=None,
     ):
-        cluster_vectors, cluster_locations, hdbscan_tree = build_fine_grained_cluster_centers(
+        (
+            cluster_vectors,
+            cluster_locations,
+            hdbscan_tree,
+        ) = build_fine_grained_cluster_centers(
             source_vectors,
             map_representation,
             umap_metric=vector_metric,
@@ -468,7 +473,11 @@ class MetadataLabelLayers(object):
             hdbscan_min_cluster_size=hdbscan_min_cluster_size,
             random_state=random_state,
         )
-        vector_layers, self.location_layers, self.pointset_layers = build_cluster_layers(
+        (
+            vector_layers,
+            self.location_layers,
+            self.pointset_layers,
+        ) = build_cluster_layers(
             cluster_vectors,
             cluster_locations,
             min_clusters=min_clusters_in_layer,
@@ -489,12 +498,9 @@ class MetadataLabelLayers(object):
             )
 
         self.labels = text_labels_from_source_metadata(
-            self.pointset_layers,
-            metadata_dataframe,
-            items_per_label=items_per_label,
+            self.pointset_layers, metadata_dataframe, items_per_label=items_per_label,
         )
         self.label_formatter = label_formatter
-
 
     @property
     def labels_for_display(self):

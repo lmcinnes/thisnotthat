@@ -3,9 +3,11 @@ import param
 import pandas as pd
 from io import BytesIO
 import numpy as np
-import numpy.typing as npt
+
+# import numpy.typing as npt
 
 from typing import *
+
 
 class DataPane(pn.reactive.Reactive):
 
@@ -14,25 +16,25 @@ class DataPane(pn.reactive.Reactive):
     data = param.DataFrame(doc="Source data")
 
     def __init__(
-            self,
-            labels: npt.ArrayLike,
-            raw_dataframe: pd.DataFrame,
-            *,
-            width: int = 600,
-            height: int = 600,
-            tabulator_configuration: dict = {},
-            formatters: dict = {},
-            header_align: Union[dict, str] = "center",
-            hidden_columns: List[str] = [],
-            layout: str = "fit_data_table",
-            frozen_columns: List[str] = [],
-            page_size: int = 20,
-            row_height: int = 30,
-            show_index: bool = True,
-            sorters: List[Dict[str, str]] = [],
-            theme: str = "materialize",
-            widths: Dict[str, int] = {},
-            name: str = "Data Table",
+        self,
+        labels,  #: npt.ArrayLike,
+        raw_dataframe: pd.DataFrame,
+        *,
+        width: int = 600,
+        height: int = 600,
+        tabulator_configuration: dict = {},
+        formatters: dict = {},
+        header_align: Union[dict, str] = "center",
+        hidden_columns: List[str] = [],
+        layout: str = "fit_data_table",
+        frozen_columns: List[str] = [],
+        page_size: int = 20,
+        row_height: int = 30,
+        show_index: bool = True,
+        sorters: List[Dict[str, str]] = [],
+        theme: str = "materialize",
+        widths: Dict[str, int] = {},
+        name: str = "Data Table",
     ) -> None:
         super().__init__(name=name)
         if np.all(raw_dataframe.index.array == np.arange(len(raw_dataframe))):
