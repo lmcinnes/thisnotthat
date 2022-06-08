@@ -439,7 +439,7 @@ class MetadataLabelLayers(object):
         self,
         source_vectors,  #: npt.ArrayLike,
         map_representation,  #: npt.ArrayLike,
-        metadata_dataframe: pd.Dataframe,
+        metadata_dataframe: pd.DataFrame,
         *,
         vector_metric="cosine",
         umap_n_components=5,
