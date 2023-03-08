@@ -163,32 +163,34 @@ class DeckglPlotPane(pn.viewable.Viewer, pn.reactive.Reactive):
                 "clearColor": [x for x in to_rgb(background_fill_color)] + [1.0]
             },
         }
-        self.select_method = pn.widgets.RadioButtonGroup(
-            name="Selection Method",
-            options=["None", "Click", "Brush", "Brush-Erase", "Reset"],
-            button_type="default",
-            height=32,
-        )
-        self.select_controls = pn.Row(
-            pn.widgets.StaticText(
-                value="Selection Method:",
+
+        if show_selection_controls:
+            self.select_method = pn.widgets.RadioButtonGroup(
+                name="Selection Method",
+                options=["None", "Click", "Brush", "Brush-Erase", "Reset"],
+                button_type="default",
                 height=32,
-                style={
-                    "font-weight": "bold",
-                    "line-height": "32px",
-                    "height": "64px",
-                    "text-align": "right",
-                },
-                margin=[5, 0],
-            ),
-            self.select_method,
-        )
-        self.select_method.param.watch(
-            self._change_selection_type, "value", onlychanged=True
-        )
-        self.select_message = pn.pane.Alert(
-            "", alert_type="primary", sizing_mode="stretch_width", visible=False,
-        )
+            )
+            self.select_controls = pn.Row(
+                pn.widgets.StaticText(
+                    value="Selection Method:",
+                    height=32,
+                    style={
+                        "font-weight": "bold",
+                        "line-height": "32px",
+                        "height": "64px",
+                        "text-align": "right",
+                    },
+                    margin=[5, 0],
+                ),
+                self.select_method,
+            )
+            self.select_method.param.watch(
+                self._change_selection_type, "value", onlychanged=True
+            )
+            self.select_message = pn.pane.Alert(
+                "", alert_type="primary", sizing_mode="stretch_width", visible=False,
+            )
         self.deck_pane = pn.pane.DeckGL(
             self.deck,
             sizing_mode="stretch_width",
@@ -196,33 +198,36 @@ class DeckglPlotPane(pn.viewable.Viewer, pn.reactive.Reactive):
             height=height,
             tooltips={"html": "{hover_text}"},
         )
-        self.title = pn.widgets.StaticText(
-            value="Selection Method:",
-            height=32,
-            width=width,
-            style={
-                "font-weight": "bold",
-                "font-size": "32px",
-                "line-height": "32px",
-                "height": "64px",
-                "text-align": "left",
-            },
-            margin=[5, 0],
-        )
+        # self.title = pn.widgets.StaticText(
+        #     value="Selection Method:",
+        #     height=32,
+        #     width=width,
+        #     style={
+        #         "font-weight": "bold",
+        #         "font-size": "32px",
+        #         "line-height": "32px",
+        #         "height": "64px",
+        #         "text-align": "left",
+        #     },
+        #     margin=[5, 0],
+        # )
         self.points["data"] = self.dataframe
-        self.deck_pane.param.trigger("object")
-        self.deck_pane.param.watch(
-            self._click_event_handler, "click_state", onlychanged=True
-        )
-        self.deck_pane.param.watch(self._hover_event_handler, "hover_state")
+        # self.deck_pane.param.trigger("object")
+        # self.deck_pane.param.watch(
+        #     self._click_event_handler, "click_state", onlychanged=True
+        # )
+        # self.deck_pane.param.watch(self._hover_event_handler, "hover_state")
 
-        self.pane = pn.WidgetBox(
-            pn.Column(
-                self.select_controls, self.select_message, self.title, self.deck_pane
+        if show_selection_controls:
+            self.pane = pn.WidgetBox(
+                pn.Column(
+                    self.select_controls, self.select_message, self.title, self.deck_pane
+                )
             )
-        )
-        self.select_controls.visible = show_selection_controls
-        self.title.visible = title is not None
+        else:
+            self.pane = pn.WidgetBox(self.deck_pane)
+        # self.select_controls.visible = show_selection_controls
+        # self.title.visible = title is not None
         self.labels = pd.Series(labels).copy()  # reset_index(drop=True)
         self.label_color_palette = base_color_palette
         self.label_color_factors = base_color_factors

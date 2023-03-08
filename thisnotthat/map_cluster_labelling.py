@@ -50,7 +50,7 @@ def build_fine_grained_cluster_centers(
     source_vectors: npt.ArrayLike,
     map_representation: npt.ArrayLike,
     *,
-    cluster_map_representation: bool = False,
+    cluster_map_representation: bool = True,
     umap_n_components: int = 5,
     umap_metric: str = "cosine",
     umap_n_neighbors: int = 15,
@@ -100,7 +100,11 @@ def build_fine_grained_cluster_centers(
         Centroid representations of each of the fine grained clusters found
 
     map_cluster_locations: ArrayLike of shape (n_clusters, n_map_features)
-        Centroid bsed map locations of each of the fine grained clusters found
+        Centroid based map locations of each of the fine grained clusters found
+
+    cluster_sizes: ArrayLike of shape (n_clusters)
+        The sizes of the cluster created; each will be at least ``hdbscan_min_cluster_size`` but some can
+        be considerably larger.
 
     condensed_tree: CondensedTree object
         The condensed tree representation of the clustering.
@@ -142,9 +146,12 @@ def build_fine_grained_cluster_centers(
         if cluster_id != -1
     ]
 
+    cluster_sizes = []
+
     return (
         np.array(cluster_vectors),
         np.array(map_cluster_locations),
+        cluster_sizes,
         clusterer.condensed_tree_,
     )
 
