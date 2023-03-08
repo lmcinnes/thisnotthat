@@ -91,9 +91,9 @@ class DeckglPlotPane(pn.viewable.Viewer, pn.reactive.Reactive):
                 base_color_factors.append(label)
                 base_color_palette.append(color)
             if palette_length is not None:
-                self.color_mapping.palette = glasbey.extend_palette(base_color_palette, palette_size=palette_length)
+                base_color_palette = glasbey.extend_palette(base_color_palette, palette_size=palette_length)
             else:
-                self.color_mapping.palette = glasbey.extend_palette(base_color_palette, palette_size=256)
+                base_color_palette = glasbey.extend_palette(base_color_palette, palette_size=256)
         else:
             if palette_length is None:
                 if len(set(labels)) == 1 and labels[0] == "unlabelled":
@@ -225,7 +225,7 @@ class DeckglPlotPane(pn.viewable.Viewer, pn.reactive.Reactive):
                 )
             )
         else:
-            self.pane = pn.WidgetBox(self.deck_pane)
+            self.pane = pn.WidgetBox(title, self.deck_pane)
         # self.select_controls.visible = show_selection_controls
         # self.title.visible = title is not None
         self.labels = pd.Series(labels).copy()  # reset_index(drop=True)
